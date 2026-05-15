@@ -1,0 +1,40 @@
+using UnityEngine;
+
+public class ChoiceTrigger : MonoBehaviour
+{
+    [Header("Choice Settings")]
+    public string choiceQuestion = "What will you do?";
+    public string optionA = "Option A";
+    public string optionB = "Option B";
+    public bool isGoodChoiceA = true;
+
+    private bool hasTriggered = false;
+    private ChoiceManager choiceManager;
+
+    private void Start()
+    {
+        choiceManager = FindObjectOfType<ChoiceManager>();
+
+        if (choiceManager == null)
+            Debug.LogWarning("ChoiceManager not found!");
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && !hasTriggered)
+        {
+            hasTriggered = true;
+            choiceManager.ShowChoicePanel(
+                choiceQuestion,
+                optionA,
+                optionB,
+                isGoodChoiceA
+            );
+        }
+    }
+
+    public void ResetTrigger()
+    {
+        hasTriggered = false;
+    }
+}

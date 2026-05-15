@@ -12,12 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/StudyRoom.unity
     guid: 4c4fc370af8a9004c99d6672ef215dc4
   - enabled: 1
-    path: Assets/Scenes/CyberbullyingDesk.unity
-    guid: 12bf68acaa378e2489bc68706366992e
-  - enabled: 1
-    path: Assets/Scenes/Kitchen.unity
-    guid: 07a575df7ec32b0488d6a4516e40b80e
-  - enabled: 1
     path: Assets/Scenes/EndingScene.unity
     guid: 887c6fa525074d14385faa9fd2deaa7f
   m_configObjects:
