@@ -5,20 +5,14 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    // Score tracking
     private int score = 0;
 
-    public bool helpedWithStudying = false;
+    // Track specific choices
+    public bool studiedForExam = false;
     public bool respondedToCyberbullying = false;
-    public bool madeHealthyChoice = false;
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void CreateInstance()
-    {
-        if (Instance != null) return;
-
-        GameObject go = new GameObject("GameManager");
-        go.AddComponent<GameManager>();
-    }
+    public bool helpedFamily = false;
+    public bool sleptEarly = false;
 
     private void Awake()
     {
@@ -37,12 +31,39 @@ public class GameManager : MonoBehaviour
         Debug.Log("Score: " + score);
     }
 
-    public int GetScore() => score;
+    public int GetScore()
+    {
+        return score;
+    }
 
     public void ResetScore()
     {
         score = 0;
+        studiedForExam = false;
+        respondedToCyberbullying = false;
+        helpedFamily = false;
+        sleptEarly = false;
         Debug.Log("Score Reset");
+    }
+
+    // Mental Health based on cyberbullying choice
+    public string GetMentalHealth()
+    {
+        if (respondedToCyberbullying)
+            return "Good — You handled it maturely";
+        else
+            return "Poor — Reacting with anger made things worse";
+    }
+
+    // Exam Confidence based on study + sleep choices
+    public string GetExamConfidence()
+    {
+        if (studiedForExam && sleptEarly)
+            return "Very Confident — Well prepared and rested";
+        else if (studiedForExam || sleptEarly)
+            return "Fairly Confident — Could have done more";
+        else
+            return "Not Ready — Neither studied nor slept early";
     }
 
     public void LoadScene(int sceneIndex)

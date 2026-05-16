@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class ChoiceManager : MonoBehaviour
 {
@@ -18,10 +19,14 @@ public class ChoiceManager : MonoBehaviour
     public float outcomeDuration = 3f;
 
     private bool isGoodChoiceA;
+    private ChoiceTrigger.ChoiceType currentChoiceType;
+    private PlayerInput playerInput;
 
     private void Start()
     {
         ValidateReferences();
+
+        playerInput = FindFirstObjectByType<PlayerInput>();
 
         if (choicePanel != null)
             choicePanel.SetActive(false);
@@ -40,7 +45,8 @@ public class ChoiceManager : MonoBehaviour
     }
 
     public void ShowChoicePanel(string question,
-        string optionA, string optionB, bool goodChoiceA)
+        string optionA, string optionB, bool goodChoiceA,
+        ChoiceTrigger.ChoiceType choiceType)
     {
         if (choicePanel == null || questionText == null ||
             optionAText == null || optionBText == null)
@@ -50,6 +56,7 @@ public class ChoiceManager : MonoBehaviour
         }
 
         isGoodChoiceA = goodChoiceA;
+        currentChoiceType = choiceType;
 
         questionText.text = question;
         optionAText.text = optionA;
@@ -61,6 +68,9 @@ public class ChoiceManager : MonoBehaviour
         Cursor.visible = true;
 
         Time.timeScale = 0f;
+
+        if (playerInput != null)
+            playerInput.DeactivateInput();
     }
 
     public void OnChoiceA() => ProcessChoice(true);
@@ -71,7 +81,7 @@ public class ChoiceManager : MonoBehaviour
         if (choicePanel == null || outcomePanel == null || outcomeText == null)
         {
             Debug.LogError("ChoiceManager: Cannot process choice — missing references!", this);
-            Time.timeScale = 1f; // safety restore
+            Time.timeScale = 1f;
             return;
         }
 
@@ -80,13 +90,37 @@ public class ChoiceManager : MonoBehaviour
 
         bool isGoodChoice = (choseA == isGoodChoiceA);
 
+        // Track specific choices in GameManager
+        if (GameManager.Instance != null)
+        {
+            if (isGoodChoice)
+            {
+                GameManager.Instance.AddPoint();
+
+                switch (currentChoiceType)
+                {
+                    case ChoiceTrigger.ChoiceType.StudyChoice:
+                        GameManager.Instance.studiedForExam = true;
+                        break;
+                    case ChoiceTrigger.ChoiceType.CyberbullyingChoice:
+                        GameManager.Instance.respondedToCyberbullying = true;
+                        break;
+                    case ChoiceTrigger.ChoiceType.FamilyChoice:
+                        GameManager.Instance.helpedFamily = true;
+                        break;
+                    case ChoiceTrigger.ChoiceType.SleepChoice:
+                        GameManager.Instance.sleptEarly = true;
+                        break;
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("ChoiceManager: GameManager.Instance is null!", this);
+        }
+
         if (isGoodChoice)
         {
-            if (GameManager.Instance != null)
-                GameManager.Instance.AddPoint();
-            else
-                Debug.LogError("ChoiceManager: GameManager.Instance is null!", this);
-
             outcomeText.text = "Good choice! +1 point";
             outcomeText.color = new Color(0.18f, 0.42f, 0.31f);
         }
@@ -97,6 +131,16 @@ public class ChoiceManager : MonoBehaviour
         }
 
         outcomePanel.SetActive(true);
+
+        // Update score display
+        FindFirstObjectByType<ScoreManager>()?.UpdateDisplay();
+
+        // Notify GameFlow
+        FindFirstObjectByType<GameFlow>()?.ChoiceMade();
+
+        // Show next dialogue hint
+        FindFirstObjectByType<DialogueManager>()?.ShowNextMessage();
+
         Invoke(nameof(HideOutcome), outcomeDuration);
     }
 
@@ -107,5 +151,8 @@ public class ChoiceManager : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (playerInput != null)
+            playerInput.ActivateInput();
     }
 }

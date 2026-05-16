@@ -54,7 +54,7 @@ Assets/Starter Assets/Editor/URPWizard/URPWizard.cs
 Temp/obj/URPWizard/.NETStandard,Version=v2.1.AssemblyAttributes.cs
 
 [metadataReferences]
-../../Unity 6000.0.58f2/Editor/Data/Managed/
+../../../Unity 6000.0.58f2/Editor/Data/Managed/
  UnityEditor.Graphs.dll
  UnityEngine/
   UnityEditor.AccessibilityModule.dll
@@ -177,7 +177,7 @@ Temp/obj/URPWizard/.NETStandard,Version=v2.1.AssemblyAttributes.cs
   UnityEngine.VRModule.dll
   UnityEngine.WindModule.dll
   UnityEngine.XRModule.dll
-../../Unity 6000.0.58f2/Editor/Data/
+../../../Unity 6000.0.58f2/Editor/Data/
  PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
  UnityReferenceAssemblies/unity-4.8-api/Facades/
   Microsoft.Win32.Primitives.dll
@@ -333,7 +333,7 @@ Library/ScriptAssemblies/
  UnityEngine.UI.dll
 
 [analyzerReferences]
-../../Unity 6000.0.58f2/Editor/Data/Tools/Unity.SourceGenerators/
+../../../Unity 6000.0.58f2/Editor/Data/Tools/Unity.SourceGenerators/
  Unity.Properties.SourceGenerator.dll
  Unity.SourceGenerators.dll
  Unity.UIToolkit.SourceGenerator.dll

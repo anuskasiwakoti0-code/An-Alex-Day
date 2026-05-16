@@ -8,12 +8,24 @@ public class ChoiceTrigger : MonoBehaviour
     public string optionB = "Option B";
     public bool isGoodChoiceA = true;
 
+    [Header("Choice Tracking")]
+    public ChoiceType choiceType = ChoiceType.None;
+
+    public enum ChoiceType
+    {
+        None,
+        StudyChoice,
+        CyberbullyingChoice,
+        FamilyChoice,
+        SleepChoice
+    }
+
     private bool hasTriggered = false;
     private ChoiceManager choiceManager;
 
     private void Start()
     {
-        choiceManager = FindObjectOfType<ChoiceManager>();
+        choiceManager = FindFirstObjectByType<ChoiceManager>();
 
         if (choiceManager == null)
             Debug.LogWarning("ChoiceManager not found!");
@@ -28,7 +40,8 @@ public class ChoiceTrigger : MonoBehaviour
                 choiceQuestion,
                 optionA,
                 optionB,
-                isGoodChoiceA
+                isGoodChoiceA,
+                choiceType
             );
         }
     }
