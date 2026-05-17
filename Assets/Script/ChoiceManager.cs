@@ -154,5 +154,8 @@ public class ChoiceManager : MonoBehaviour
 
         if (playerInput != null)
             playerInput.ActivateInput();
+
+        // Advance time of day
+        FindFirstObjectByType<DayNightCycle>()?.AdvanceTime(3f);
     }
 }

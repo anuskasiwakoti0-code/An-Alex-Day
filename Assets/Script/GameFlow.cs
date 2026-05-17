@@ -12,12 +12,20 @@ public class GameFlow : MonoBehaviour
 
         if (totalChoices >= maxChoices)
         {
-            Invoke("LoadEnding", 3f);
+            Debug.Log("All choices made — new dawn rising...");
+            // Set new dawn lighting first
+            FindFirstObjectByType<DayNightCycle>()?.SetNewDawn();
+            // Then load ending after short delay
+            Invoke("LoadEnding", 4f);
         }
     }
 
     private void LoadEnding()
     {
-        GameManager.Instance.LoadSceneByName("EndingScene");
+        Debug.Log("Loading EndingScene...");
+        if (GameManager.Instance != null)
+            GameManager.Instance.LoadSceneByName("EndingScene");
+        else
+            UnityEngine.SceneManagement.SceneManager.LoadScene(2);
     }
 }

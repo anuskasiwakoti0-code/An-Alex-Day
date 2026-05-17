@@ -35,6 +35,10 @@ public class ChoiceTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player") && !hasTriggered)
         {
+            // Check if game has started via DialogueManager
+            DialogueManager dm = FindFirstObjectByType<DialogueManager>();
+            if (dm != null && !dm.gameStarted) return;
+
             hasTriggered = true;
             choiceManager.ShowChoicePanel(
                 choiceQuestion,
