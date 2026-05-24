@@ -497,6 +497,15 @@ MonoBehaviour:
   afternoonColor: {r: 1, g: 1, b: 1, a: 1}
   eveningColor: {r: 1, g: 0.7, b: 0.4, a: 1}
   nightColor: {r: 0.1, g: 0.1, b: 0.3, a: 1}
+  morningAmbient: {r: 0.4, g: 0.4, b: 0.5, a: 1}
+  afternoonAmbient: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  eveningAmbient: {r: 0.3, g: 0.2, b: 0.2, a: 1}
+  nightAmbient: {r: 0.05, g: 0.05, b: 0.1, a: 1}
+  useFog: 1
+  morningFog: {r: 0.8, g: 0.8, b: 0.9, a: 1}
+  afternoonFog: {r: 0.9, g: 0.9, b: 1, a: 1}
+  eveningFog: {r: 0.6, g: 0.4, b: 0.3, a: 1}
+  nightFog: {r: 0.02, g: 0.02, b: 0.05, a: 1}
 --- !u!4 &237563693
 Transform:
   m_ObjectHideFlags: 0
@@ -2707,6 +2716,7 @@ MonoBehaviour:
   message3: That was tough. Your family is nearby...
   message4: It's getting late. Time to rest...
   message5: What a day! Head to bed now...
+  gameStarted: 0
 --- !u!4 &1045127592
 Transform:
   m_ObjectHideFlags: 0
@@ -3945,6 +3955,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxChoices: 4
+  trigger1: {fileID: 432687526}
+  trigger2: {fileID: 2004272327}
+  trigger3: {fileID: 47382338}
+  trigger4: {fileID: 743660406}
 --- !u!4 &1497494393
 Transform:
   m_ObjectHideFlags: 0

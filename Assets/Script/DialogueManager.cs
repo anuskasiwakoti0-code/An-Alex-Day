@@ -36,9 +36,6 @@ public class DialogueManager : MonoBehaviour
         if (interactionPrompt != null)
             interactionPrompt.SetActive(true);
 
-        // Disable all choice triggers at start
-        DisableAllTriggers();
-
         Debug.Log("DialogueManager: waiting for E key...");
     }
 
@@ -67,28 +64,8 @@ public class DialogueManager : MonoBehaviour
         ShowMessage(0);
         Debug.Log("DialogueManager: showing message 1");
 
-        // Enable triggers after short delay
-        Invoke("EnableAllTriggers", 1f);
-    }
-
-    private void DisableAllTriggers()
-    {
-        ChoiceTrigger[] triggers =
-            FindObjectsByType<ChoiceTrigger>(FindObjectsSortMode.None);
-        foreach (ChoiceTrigger trigger in triggers)
-            trigger.enabled = false;
-
-        Debug.Log("All triggers disabled");
-    }
-
-    private void EnableAllTriggers()
-    {
-        ChoiceTrigger[] triggers =
-            FindObjectsByType<ChoiceTrigger>(FindObjectsSortMode.None);
-        foreach (ChoiceTrigger trigger in triggers)
-            trigger.enabled = true;
-
-        Debug.Log("All triggers enabled");
+        // Notify GameFlow to enable first trigger
+        FindFirstObjectByType<GameFlow>()?.StartGame();
     }
 
     public void ShowNextMessage()

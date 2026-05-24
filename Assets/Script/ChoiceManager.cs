@@ -16,7 +16,7 @@ public class ChoiceManager : MonoBehaviour
     public TMP_Text outcomeText;
 
     [Header("Settings")]
-    public float outcomeDuration = 3f;
+    public float outcomeDuration = 4f;
 
     private bool isGoodChoiceA;
     private ChoiceTrigger.ChoiceType currentChoiceType;
@@ -25,7 +25,6 @@ public class ChoiceManager : MonoBehaviour
     private void Start()
     {
         ValidateReferences();
-
         playerInput = FindFirstObjectByType<PlayerInput>();
 
         if (choicePanel != null)
@@ -90,10 +89,9 @@ public class ChoiceManager : MonoBehaviour
 
         bool isGoodChoice = (choseA == isGoodChoiceA);
 
-        // Track specific choices in GameManager
-        if (GameManager.Instance != null)
+        if (isGoodChoice)
         {
-            if (isGoodChoice)
+            if (GameManager.Instance != null)
             {
                 GameManager.Instance.AddPoint();
 
@@ -101,32 +99,47 @@ public class ChoiceManager : MonoBehaviour
                 {
                     case ChoiceTrigger.ChoiceType.StudyChoice:
                         GameManager.Instance.studiedForExam = true;
+                        outcomeText.text = "Great choice! Alex sat down and studied hard for the exam. +1 point";
                         break;
                     case ChoiceTrigger.ChoiceType.CyberbullyingChoice:
                         GameManager.Instance.respondedToCyberbullying = true;
+                        outcomeText.text = "Well done! Alex blocked and reported the bully calmly. +1 point";
                         break;
                     case ChoiceTrigger.ChoiceType.FamilyChoice:
                         GameManager.Instance.helpedFamily = true;
+                        outcomeText.text = "Good job! Alex helped the family with chores willingly. +1 point";
                         break;
                     case ChoiceTrigger.ChoiceType.SleepChoice:
                         GameManager.Instance.sleptEarly = true;
+                        outcomeText.text = "Smart! Alex went to bed early to rest well for the exam. +1 point";
+                        break;
+                    default:
+                        outcomeText.text = "Good choice! +1 point";
                         break;
                 }
+                outcomeText.color = new Color(0.18f, 0.42f, 0.31f);
             }
         }
         else
         {
-            Debug.LogError("ChoiceManager: GameManager.Instance is null!", this);
-        }
-
-        if (isGoodChoice)
-        {
-            outcomeText.text = "Good choice! +1 point";
-            outcomeText.color = new Color(0.18f, 0.42f, 0.31f);
-        }
-        else
-        {
-            outcomeText.text = "Not the best choice...";
+            switch (currentChoiceType)
+            {
+                case ChoiceTrigger.ChoiceType.StudyChoice:
+                    outcomeText.text = "Alex chose to play games instead of studying. This might affect the exam!";
+                    break;
+                case ChoiceTrigger.ChoiceType.CyberbullyingChoice:
+                    outcomeText.text = "Alex replied with anger making the situation worse.";
+                    break;
+                case ChoiceTrigger.ChoiceType.FamilyChoice:
+                    outcomeText.text = "Alex refused to help and stayed in the room alone.";
+                    break;
+                case ChoiceTrigger.ChoiceType.SleepChoice:
+                    outcomeText.text = "Alex stayed up all night watching movies and playing games!";
+                    break;
+                default:
+                    outcomeText.text = "Not the best choice...";
+                    break;
+            }
             outcomeText.color = new Color(0.76f, 0.07f, 0.12f);
         }
 

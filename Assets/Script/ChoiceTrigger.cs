@@ -23,12 +23,15 @@ public class ChoiceTrigger : MonoBehaviour
     private bool hasTriggered = false;
     private ChoiceManager choiceManager;
 
-    private void Start()
+    private void OnEnable()
     {
+        // Find ChoiceManager every time trigger is enabled
         choiceManager = FindFirstObjectByType<ChoiceManager>();
 
         if (choiceManager == null)
             Debug.LogWarning("ChoiceManager not found!");
+        else
+            Debug.Log(gameObject.name + " trigger enabled and ready!");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,6 +41,16 @@ public class ChoiceTrigger : MonoBehaviour
             // Check if game has started via DialogueManager
             DialogueManager dm = FindFirstObjectByType<DialogueManager>();
             if (dm != null && !dm.gameStarted) return;
+
+            // Find ChoiceManager if null
+            if (choiceManager == null)
+                choiceManager = FindFirstObjectByType<ChoiceManager>();
+
+            if (choiceManager == null)
+            {
+                Debug.LogError("ChoiceManager is null!");
+                return;
+            }
 
             hasTriggered = true;
             choiceManager.ShowChoicePanel(
